@@ -11,7 +11,7 @@ A fun, animated Rock-Paper-Scissors game built with HTML, CSS, and JavaScript. F
 
 ## 🚀 Live Demo
 
-[![View Live](https://img.shields.io/badge/View-Live-green?style=for-the-badge&logo=github)](https://your-live-url.netlify.app/)
+[![View Live](https://img.shields.io/badge/View-Live-green?style=for-the-badge&logo=github)](https://bapux03.github.io/rock-paper-scissors-retro-game/)
 
 > 📝 Replace the link above with your deployed link (Netlify, Vercel, GitHub Pages, etc.)
 
