@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rock Paper Scissors</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Press Start 2P', cursive;
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    h1 {
+      animation: glow 1.5s ease-in-out infinite alternate;
+      font-size: 1.5rem;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff; }
+      to { text-shadow: 0 0 20px #ff00ff; }
+    }
+    .game {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      border: 2px dashed white;
+      border-radius: 16px;
+      background-color: rgba(0,0,0,0.3);
+      max-width: 400px;
+      width: 100%;
+    }
+    .choices {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .choice {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .choice:hover {
+      transform: scale(1.2);
+    }
+    .result {
+      font-size: 0.75rem;
+      margin-top: 1rem;
+      min-height: 2rem;
+    }
+    .score {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+      border: none;
+      background-color: #ff00ff;
+      color: #fff;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #e600e6;
+    }
+    img {
+      width: 60px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rock Paper Scissors</h1>
+  <div class="game">
+    <div class="choices">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/OIG1.paper.png" class="choice" alt="rock" data-choice="rock">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/OIG1.rock.png" class="choice" alt="paper" data-choice="paper">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bb/OIG1.scissors.png" class="choice" alt="scissors" data-choice="scissors">
+    </div>
+    <div class="result" id="result">Make your choice!</div>
+    <div class="score" id="score">You: 0 | Bot: 0</div>
+    <button onclick="resetGame()">Restart</button>
+  </div>
+
+  <audio id="sound-win" src="https://cdn.pixabay.com/audio/2022/10/03/audio_bfe84d4be6.mp3"></audio>
+  <audio id="sound-lose" src="https://cdn.pixabay.com/audio/2022/03/16/audio_c4b9a64660.mp3"></audio>
+  <audio id="sound-draw" src="https://cdn.pixabay.com/audio/2022/06/06/audio_6aa2687c3d.mp3"></audio>
+
+  <script>
+    const choices = document.querySelectorAll('.choice');
+    const resultDiv = document.getElementById('result');
+    const scoreDiv = document.getElementById('score');
+    const soundWin = document.getElementById('sound-win');
+    const soundLose = document.getElementById('sound-lose');
+    const soundDraw = document.getElementById('sound-draw');
+
+    let playerScore = 0;
+    let botScore = 0;
+
+    const getBotChoice = () => {
+      const options = ['rock', 'paper', 'scissors'];
+      return options[Math.floor(Math.random() * options.length)];
+    };
+
+    const getResult = (player, bot) => {
+      if (player === bot) return 'draw';
+      if (
+        (player === 'rock' && bot === 'scissors') ||
+        (player === 'scissors' && bot === 'paper') ||
+        (player === 'paper' && bot === 'rock')
+      ) {
+        return 'win';
+      }
+      return 'lose';
+    };
+
+    const playSound = (result) => {
+      if (result === 'win') soundWin.play();
+      else if (result === 'lose') soundLose.play();
+      else soundDraw.play();
+    };
+
+    choices.forEach(choice => {
+      choice.addEventListener('click', () => {
+        const playerChoice = choice.dataset.choice;
+        const botChoice = getBotChoice();
+        const result = getResult(playerChoice, botChoice);
+
+        if (result === 'win') playerScore++;
+        else if (result === 'lose') botScore++;
+
+        resultDiv.textContent = `You chose ${playerChoice.toUpperCase()} - Bot chose ${botChoice.toUpperCase()} => You ${result.toUpperCase()}!`;
+        scoreDiv.textContent = `You: ${playerScore} | Bot: ${botScore}`;
+        playSound(result);
+      });
+    });
+
+    function resetGame() {
+      playerScore = 0;
+      botScore = 0;
+      resultDiv.textContent = 'Make your choice!';
+      scoreDiv.textContent = 'You: 0 | Bot: 0';
+    }
+  </script>
+</body>
+</html>
